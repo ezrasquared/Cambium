@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+
+  name String @unique
+
+  species Species[]
+
+  categoryTraits CategoryTrait[]
+}
+
+model Species {
+  id Int @id @default(autoincrement())
+
+  scientificName String @unique
+  commonName     String
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  speciesTraits SpeciesTrait[]
+
+  images Image[]
+
+  journalEntries JournalProgress[]
+}
+
+model Trait {
+  id Int @id @default(autoincrement())
+
+  name String @unique
+
+  displayName String
+
+  categoryTraits CategoryTrait[]
+
+  traitValues TraitValue[]
+
+  speciesTraits SpeciesTrait[]
+
+  imageVotes ImageTraitVote[]
+}
+
+model TraitValue {
+  id Int @id @default(autoincrement())
+
+  traitId Int
+  value   String
+
+  trait Trait @relation(fields: [traitId], references: [id])
+
+  speciesTraits SpeciesTrait[]
+
+  imageVotes ImageTraitVote[]
+
+  @@unique([traitId, value])
+}
+
+model CategoryTrait {
+  id Int @id @default(autoincrement())
+
+  categoryId Int
+  traitId    Int
+
+  category Category @relation(fields: [categoryId], references: [id])
+  trait    Trait    @relation(fields: [traitId], references: [id])
+
+  @@unique([categoryId, traitId])
+}
+
+model SpeciesTrait {
+  id Int @id @default(autoincrement())
+
+  speciesId    Int
+  traitId      Int
+  traitValueId Int
+
+  species    Species    @relation(fields: [speciesId], references: [id])
+  trait      Trait      @relation(fields: [traitId], references: [id])
+  traitValue TraitValue @relation(fields: [traitValueId], references: [id])
+
+  @@unique([speciesId, traitId])
+}
+
+model Player {
+  id Int @id @default(autoincrement())
+
+  username String @unique
+
+  email        String?
+  passwordHash String?
+
+  createdAt DateTime @default(now())
+
+  encounterCount Int @default(0)
+
+  journalProgress JournalProgress[]
+}
+
+model JournalProgress {
+  id Int @id @default(autoincrement())
+
+  playerId  Int
+  speciesId Int
+
+  discovered Boolean @default(true)
+
+  masteryLevel Int @default(0)
+
+  correctIds   Int @default(0)
+  incorrectIds Int @default(0)
+
+  player  Player  @relation(fields: [playerId], references: [id])
+  species Species @relation(fields: [speciesId], references: [id])
+
+  @@unique([playerId, speciesId])
+}
+
+model Image {
+  id Int @id @default(autoincrement())
+
+  speciesId Int
+  species Species @relation(fields: [speciesId], references: [id])
+
+  url String
+
+  license String?
+  photographer String?
+
+  traitSetVersion String
+
+  informative Boolean @default(true)
+
+  tagComplete Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  votes ImageTraitVote[]
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  username String @unique
+  passwordHash String
+
+  role String @default("tagger")
+
+  createdAt DateTime @default(now())
+
+  votes ImageTraitVote[]
+}
+
+model ImageTraitVote {
+  id Int @id @default(autoincrement())
+
+  imageId Int
+  image Image @relation(fields: [imageId], references: [id])
+
+  traitId Int
+  trait Trait @relation(fields: [traitId], references: [id])
+
+  traitValueId Int
+  traitValue TraitValue @relation(fields: [traitValueId], references: [id])
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([imageId, traitId, userId])
+}
+
+model TraitSetVersion {
+  id Int @id @default(autoincrement())
+
+  name String @unique
+
+  description String?
+
+  createdAt DateTime @default(now())
+}
