@@ -27,10 +27,13 @@ function App() {
     return <Login setUser={setUser} />
   }
 
+  // After the guard above, user cannot be null
+  const currentUser = user
+
   async function enterCambium() {
 
     const res = await fetch(
-      `http://localhost:4000/encounter?userId=${user.id}`
+      `http://localhost:4000/encounter?userId=${currentUser.id}`
     )
 
     const data = await res.json()
@@ -57,7 +60,7 @@ function App() {
 
       <div style={{ marginBottom: 20 }}>
 
-        Logged in as <b>{user.username}</b> ({user.role})
+        Logged in as <b>{currentUser.username}</b> ({currentUser.role})
 
         <button
           onClick={logout}
@@ -70,11 +73,11 @@ function App() {
 
       {/* Tagging */}
 
-      <Tagger user={user} />
+      <Tagger user={currentUser} />
 
       {/* Game access */}
 
-      {user.role === "admin" && (
+      {currentUser.role === "admin" && (
 
         <div style={{ marginTop: 40 }}>
 
