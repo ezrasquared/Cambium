@@ -13,6 +13,7 @@
   "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^7.5.0",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "prisma": "^7.5.0"
@@ -22,4 +23,3 @@
     "typescript": "^5.9.3"
   }
 }
-
