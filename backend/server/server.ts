@@ -106,13 +106,11 @@ app.get("/tag-image", async (req, res) => {
   const image = await prisma.image.findFirst({
 
     where: {
-
       votes: {
         none: {
           userId: userId
         }
       }
-
     },
 
     include: {
@@ -228,8 +226,14 @@ app.get("/encounter", async (req, res) => {
 
 })
 
-const PORT = 4000
+/*
+──────────────────────────────
+SERVER START
+──────────────────────────────
+*/
 
-app.listen(PORT, () => {
+const PORT = Number(process.env.PORT) || 4000
+
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Cambium server running on port ${PORT}`)
 })
