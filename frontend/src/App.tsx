@@ -33,7 +33,7 @@ function App() {
   async function enterCambium() {
 
     const res = await fetch(
-      `http://localhost:4000/encounter?userId=${currentUser.id}`
+      `cambium-production-4af3.up.railway.app/encounter?userId=${currentUser.id}`
     )
 
     const data = await res.json()

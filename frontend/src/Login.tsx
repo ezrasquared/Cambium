@@ -25,8 +25,8 @@ function Login({ setUser }: Props) {
 
       const endpoint =
         mode === "login"
-          ? "http://localhost:4000/login"
-          : "http://localhost:4000/register"
+          ? "cambium-production-4af3.up.railway.app/login"
+          : "cambium-production-4af3.up.railway.app/register"
 
       const res = await fetch(endpoint, {
         method: "POST",

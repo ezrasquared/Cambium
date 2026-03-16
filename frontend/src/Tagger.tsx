@@ -56,7 +56,7 @@ function Tagger({ user }: TaggerProps) {
   async function loadImage() {
 
     const res = await fetch(
-      `http://localhost:4000/tag-image?userId=${user.id}`
+      `cambium-production-4af3.up.railway.app/tag-image?userId=${user.id}`
     )
 
     const data = await res.json()
@@ -69,7 +69,7 @@ function Tagger({ user }: TaggerProps) {
     setImage(data)
 
     const traitRes = await fetch(
-      `http://localhost:4000/traits/${data.species.category.id}`
+      `cambium-production-4af3.up.railway.app/traits/${data.species.category.id}`
     )
 
     const traitData = await traitRes.json()
@@ -135,7 +135,7 @@ function Tagger({ user }: TaggerProps) {
 
     if (!image) return
 
-    await fetch("http://localhost:4000/tag", {
+    await fetch("cambium-production-4af3.up.railway.app/tag", {
 
       method: "POST",
 
@@ -165,7 +165,7 @@ function Tagger({ user }: TaggerProps) {
 
     if (!image) return
 
-    await fetch("http://localhost:4000/skip-image", {
+    await fetch("cambium-production-4af3.up.railway.app/skip-image", {
 
       method: "POST",
 
@@ -190,7 +190,7 @@ function Tagger({ user }: TaggerProps) {
     async function init() {
 
       const res = await fetch(
-        `http://localhost:4000/tag-image?userId=${user.id}`
+        `cambium-production-4af3.up.railway.app/tag-image?userId=${user.id}`
       )
 
       const data = await res.json()
@@ -203,7 +203,7 @@ function Tagger({ user }: TaggerProps) {
       setImage(data)
 
       const traitRes = await fetch(
-        `http://localhost:4000/traits/${data.species.category.id}`
+        `cambium-production-4af3.up.railway.app/traits/${data.species.category.id}`
       )
 
       const traitData = await traitRes.json()
