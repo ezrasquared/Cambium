@@ -1,4 +1,5 @@
 import { useState } from "react"
+const API = import.meta.env.VITE_API_URL
 
 type User = {
   id: number
@@ -25,8 +26,8 @@ function Login({ setUser }: Props) {
 
       const endpoint =
         mode === "login"
-          ? "cambium-production-4af3.up.railway.app/login"
-          : "cambium-production-4af3.up.railway.app/register"
+          ? `${API}/login`
+          : `${API}/register`
 
       const res = await fetch(endpoint, {
         method: "POST",

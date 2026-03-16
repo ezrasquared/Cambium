@@ -1,6 +1,8 @@
 import { useState } from "react"
 import Tagger from "./Tagger"
 import Login from "./Login"
+const API = import.meta.env.VITE_API_URL
+
 
 type User = {
   id: number
@@ -33,7 +35,7 @@ function App() {
   async function enterCambium() {
 
     const res = await fetch(
-      `cambium-production-4af3.up.railway.app/encounter?userId=${currentUser.id}`
+      `${API}/encounter?userId=${currentUser.id}`
     )
 
     const data = await res.json()

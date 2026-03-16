@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 
+const API = import.meta.env.VITE_API_URL
+
 type User = {
   id: number
   username: string
@@ -47,16 +49,10 @@ function Tagger({ user }: TaggerProps) {
   const [tags, setTags] = useState<Tag[]>([])
   const [sessionCount, setSessionCount] = useState(0)
 
-  /*
-  ──────────────────────────────
-  LOAD IMAGE + TRAITS
-  ──────────────────────────────
-  */
-
   async function loadImage() {
 
     const res = await fetch(
-      `cambium-production-4af3.up.railway.app/tag-image?userId=${user.id}`
+      `${API}/tag-image?userId=${user.id}`
     )
 
     const data = await res.json()
@@ -69,7 +65,7 @@ function Tagger({ user }: TaggerProps) {
     setImage(data)
 
     const traitRes = await fetch(
-      `cambium-production-4af3.up.railway.app/traits/${data.species.category.id}`
+      `${API}/traits/${data.species.category.id}`
     )
 
     const traitData = await traitRes.json()
@@ -78,12 +74,6 @@ function Tagger({ user }: TaggerProps) {
     setTags([])
 
   }
-
-  /*
-  ──────────────────────────────
-  TAGGING LOGIC
-  ──────────────────────────────
-  */
 
   function toggleTrait(traitId: number) {
 
@@ -125,17 +115,11 @@ function Tagger({ user }: TaggerProps) {
 
   }
 
-  /*
-  ──────────────────────────────
-  SUBMIT TAGS
-  ──────────────────────────────
-  */
-
   async function submitTags() {
 
     if (!image) return
 
-    await fetch("cambium-production-4af3.up.railway.app/tag", {
+    await fetch(`${API}/tag`, {
 
       method: "POST",
 
@@ -155,17 +139,11 @@ function Tagger({ user }: TaggerProps) {
 
   }
 
-  /*
-  ──────────────────────────────
-  SKIP IMAGE
-  ──────────────────────────────
-  */
-
   async function skipImage() {
 
     if (!image) return
 
-    await fetch("cambium-production-4af3.up.railway.app/skip-image", {
+    await fetch(`${API}/skip-image`, {
 
       method: "POST",
 
@@ -179,18 +157,12 @@ function Tagger({ user }: TaggerProps) {
 
   }
 
-  /*
-  ──────────────────────────────
-  INITIAL LOAD
-  ──────────────────────────────
-  */
-
   useEffect(() => {
 
     async function init() {
 
       const res = await fetch(
-        `cambium-production-4af3.up.railway.app/tag-image?userId=${user.id}`
+        `${API}/tag-image?userId=${user.id}`
       )
 
       const data = await res.json()
@@ -203,7 +175,7 @@ function Tagger({ user }: TaggerProps) {
       setImage(data)
 
       const traitRes = await fetch(
-        `cambium-production-4af3.up.railway.app/traits/${data.species.category.id}`
+        `${API}/traits/${data.species.category.id}`
       )
 
       const traitData = await traitRes.json()
@@ -215,12 +187,6 @@ function Tagger({ user }: TaggerProps) {
     init()
 
   }, [user.id])
-
-  /*
-  ──────────────────────────────
-  UI
-  ──────────────────────────────
-  */
 
   if (!image) {
     return <div>No images left to tag.</div>
