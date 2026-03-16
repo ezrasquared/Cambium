@@ -9,6 +9,7 @@
   },
   "type": "commonjs",
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.5.0",
     "@prisma/client": "^7.5.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.6",
