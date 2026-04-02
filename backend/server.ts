@@ -1,6 +1,8 @@
 import express from "express"
 import cors from "cors"
 import bcrypt from "bcrypt"
+import dotenv from "dotenv"; 
+dotenv.config();
 
 import { PrismaClient } from "@prisma/client"
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3"
