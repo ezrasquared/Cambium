@@ -5,17 +5,23 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { PrismaClient } from "@prisma/client"
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3"
+// 1. Change the import to the correct Adapter class
+import { PrismaBetterSqlite3} from "@prisma/adapter-better-sqlite3"
+// 2. Import the actual SQLite driver
+import Database from "better-sqlite3" 
 
-import "dotenv/config"
+const dbUrl = process.env.DATABASE_URL?.replace(/^file:/, "") || "../database/cambium.db";
 
+// 2. Pass an object with the 'url' property to the adapter
 const adapter = new PrismaBetterSqlite3({
-  url: process.env.DATABASE_URL!
-})
+  url: dbUrl
+});
 
-const prisma = new PrismaClient({ adapter })
+// 3. Initialize Prisma
+const prisma = new PrismaClient({ adapter });
 
 const app = express()
+// ... the rest of your code stays exactly the same
 
 app.use(cors())
 app.use(express.json())
