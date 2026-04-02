@@ -1,30 +1,46 @@
-import express from "express"
-import cors from "cors"
-import bcrypt from "bcrypt"
-import dotenv from "dotenv"; 
+import express from "express";
+import cors from "cors";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+import { PrismaClient } from "@prisma/client";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import Database from "better-sqlite3";
+
+// Initialize environment variables
 dotenv.config();
 
-import { PrismaClient } from "@prisma/client"
-// 1. Change the import to the correct Adapter class
-import { PrismaBetterSqlite3} from "@prisma/adapter-better-sqlite3"
-// 2. Import the actual SQLite driver
-import Database from "better-sqlite3" 
+/**
+ * 1. DATABASE PATH LOGIC
+ * We strip "file:" if it exists. 
+ * If DATABASE_URL is missing, we fall back to the relative path.
+ */
+const rawUrl = process.env.DATABASE_URL || "../database/cambium.db";
+const cleanPath = rawUrl.replace(/^file:/, "");
 
-const dbUrl = process.env.DATABASE_URL?.replace(/^file:/, "") || "../database/cambium.db";
-
-// 2. Pass an object with the 'url' property to the adapter
+/**
+ * 2. DRIVER & ADAPTER INITIALIZATION
+ * better-sqlite3 needs the string path directly.
+ * PrismaBetterSqlite3 needs an object containing the 'url'.
+ */
+const db = new Database(cleanPath);
 const adapter = new PrismaBetterSqlite3({
-  url: dbUrl
+  url: cleanPath 
 });
 
-// 3. Initialize Prisma
+/**
+ * 3. PRISMA CLIENT
+ */
 const prisma = new PrismaClient({ adapter });
 
-const app = express()
-// ... the rest of your code stays exactly the same
+/**
+ * 4. APP SETUP
+ */
+const app = express();
 
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
+
+// ... the rest of your routes (register, login, etc.) stay the same
 
 /*
 ──────────────────────────────
