@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 
 const API = import.meta.env.VITE_API_URL
+console.log("API URL:", API)
+
 
 type User = {
   id: number
